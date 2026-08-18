@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuantik</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#1B0F1F;
+    --bg-panel:#251320;
+    --bg-panel-2:#2E1728;
+    --line:#3E2438;
+    --magenta:#FF4D8D;
+    --magenta-soft:#ff4d8d33;
+    --gold:#FFC857;
+    --lilac:#C9A6FF;
+    --text:#F5EDE9;
+    --text-muted:#B8A2AF;
+    --danger:#FF6B6B;
+    --good:#7CE0B8;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 15% 0%, #3a1a33 0%, transparent 45%),
+      radial-gradient(circle at 90% 15%, #2a1440 0%, transparent 40%),
+      var(--bg-deep);
+    color:var(--text);
+    font-family:'Plus Jakarta Sans', sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:28px 16px 60px;
+  }
+  .app{
+    width:100%;
+    max-width:430px;
+  }
+  header{
+    text-align:center;
+    margin-bottom:22px;
+  }
+  h1{
+    font-family:'Playfair Display', serif;
+    font-style:italic;
+    font-weight:700;
+    font-size:2.6rem;
+    margin:0;
+    letter-spacing:0.5px;
+    background:linear-gradient(100deg, var(--gold), var(--magenta) 55%, var(--lilac));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .tagline{
+    margin-top:6px;
+    font-size:0.92rem;
+    color:var(--text-muted);
+    letter-spacing:0.2px;
+  }
+
+  .presets{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    padding:4px 2px 16px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .presets::-webkit-scrollbar{display:none;}
+  .chip{
+    flex:0 0 auto;
+    background:var(--bg-panel-2);
+    border:1px solid var(--line);
+    color:var(--text);
+    font-size:0.82rem;
+    font-weight:600;
+    padding:9px 15px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:transform .15s ease, border-color .15s ease, background .15s ease;
+    white-space:nowrap;
+  }
+  .chip:hover{border-color:var(--magenta);}
+  .chip:active{transform:scale(0.96);}
+  .chip.active{
+    background:linear-gradient(100deg, var(--magenta), #b23566);
+    border-color:transparent;
+  }
+
+  .card{
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:20px 18px;
+    margin-bottom:16px;
+  }
+  .card h2{
+    font-family:'Playfair Display', serif;
+    font-weight:600;
+    font-size:1.15rem;
+    margin:0 0 4px;
+    color:var(--gold);
+  }
+  .card .sub{
+    font-size:0.8rem;
+    color:var(--text-muted);
+    margin:0 0 14px;
+  }
+
+  .row-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:10px;
+  }
+  .row-item input[type="text"]{
+    flex:1.3;
+  }
+  .row-item .rp-wrap{
+    flex:1;
+    position:relative;
+  }
+  .row-item button.remove{
+    flex:0 0 auto;
+    background:transparent;
+    border:none;
+    color:var(--text-muted);
+    font-size:1.1rem;
+    cursor:pointer;
+    width:28px;
+    height:28px;
+    border-radius:50%;
+  }
+  .row-item button.remove:hover{
+    color:var(--danger);
+    background:#ff6b6b1a;
+  }
+
+  input[type="text"], input[type="number"]{
+    width:100%;
+    background:var(--bg-deep);
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-size:0.92rem;
+    font-weight:500;
+    padding:10px 12px;
+    border-radius:12px;
+    outline:none;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .rp-wrap::before{
+    content:"Rp";
+    position:absolute;
+    left:12px;
+    top:50%;
+    transform:translateY(-50%);
+    font-size:0.85rem;
+    color:var(--text-muted);
+    font-weight:600;
+    pointer-events:none;
+  }
+  .rp-wrap input{
+    padding-left:34px;
+  }
+  input:focus-visible{
+    border-color:var(--magenta);
+    box-shadow:0 0 0 3px var(--magenta-soft);
+  }
+
+  .add-row{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:none;
+    border:1px dashed var(--line);
+    color:var(--lilac);
+    font-weight:600;
+    font-size:0.85rem;
+    padding:9px 14px;
+    border-radius:12px;
+    cursor:pointer;
+    width:100%;
+    justify-content:center;
+    margin-top:2px;
+  }
+  .add-row:hover{border-color:var(--lilac);}
+
+  .field-solo{margin-top:2px;}
+  .field-solo label{
+    display:block;
+    font-size:0.85rem;
+    font-weight:600;
+    margin-bottom:6px;
+    color:var(--text);
+  }
+  .field-solo .hint{
+    font-size:0.76rem;
+    color:var(--text-muted);
+    margin-top:5px;
+  }
+
+  .two-col{display:flex; gap:12px;}
+  .two-col > div{flex:1;}
+
+  /* result panel */
+  .result{
+    position:relative;
+    text-align:center;
+    padding:34px 20px 26px;
+    border-radius:24px;
+    background:radial-gradient(circle at 50% 30%, #3a1c34 0%, var(--bg-panel) 70%);
+    border:1px solid var(--line);
+    overflow:hidden;
+  }
+  .ring{
+    position:absolute;
+    top:-40px; left:50%;
+    transform:translateX(-50%);
+    width:220px; height:220px;
+    border-radius:50%;
+    background:conic-gradient(from 0deg, var(--gold), var(--magenta), var(--lilac), var(--gold));
+    filter:blur(40px);
+    opacity:0.35;
+    animation:spin 10s linear infinite;
+  }
+  @keyframes spin{ to{ transform:translateX(-50%) rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){
+    .ring{animation:none;}
+  }
+  .result-inner{position:relative; z-index:1;}
+  .result .label{
+    font-size:0.82rem;
+    text-transform:uppercase;
+    letter-spacing:1.5px;
+    color:var(--text-muted);
+    font-weight:600;
+  }
+  .result .amount{
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:2.5rem;
+    margin:6px 0 10px;
+    color:var(--text);
+  }
+  .result .amount.negative{color:var(--danger);}
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:var(--bg-deep);
+    border:1px solid var(--line);
+    padding:6px 14px;
+    border-radius:999px;
+    font-size:0.85rem;
+    font-weight:700;
+  }
+  .badge .dot{
+    width:8px; height:8px; border-radius:50%;
+  }
+  .verdict{
+    margin-top:14px;
+    font-size:0.88rem;
+    color:var(--text-muted);
+    line-height:1.4;
+  }
+  .verdict b{color:var(--text);}
+
+  .breakdown{
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px solid var(--line);
+    text-align:left;
+    font-size:0.85rem;
+  }
+  .breakdown .line{
+    display:flex;
+    justify-content:space-between;
+    padding:4px 0;
+    color:var(--text-muted);
+  }
+  .breakdown .line span:last-child{color:var(--text); font-weight:600;}
+
+  .monthly{
+    margin-top:14px;
+  }
+  .monthly .row-item{margin-bottom:0;}
+
+  footer{
+    text-align:center;
+    margin-top:22px;
+    font-size:0.74rem;
+    color:var(--text-muted);
+  }
+
+  .export-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    margin-top:16px;
+    padding:12px 16px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:linear-gradient(100deg, var(--gold), var(--magenta) 70%);
+    color:var(--bg-deep);
+    font-family:'Plus Jakarta Sans', sans-serif;
+    font-weight:700;
+    font-size:0.88rem;
+    cursor:pointer;
+    transition:transform .15s ease, opacity .15s ease;
+  }
+  .export-btn:hover{opacity:0.92;}
+  .export-btn:active{transform:scale(0.98);}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <h1>Cuantik</h1>
+    <p class="tagline">Modal dandan, profit kelihatan.</p>
+  </header>
+
+  <div class="presets" id="presets"></div>
+
+  <div class="card">
+    <h2>Rincian Modal</h2>
+    <p class="sub">Semua bahan & biaya yang kepakai buat satu kali job.</p>
+    <div id="itemsList"></div>
+    <button class="add-row" id="addItem">+ Tambah item modal</button>
+  </div>
+
+  <div class="card">
+    <h2>Harga Jasa</h2>
+    <p class="sub">Harga yang kamu tagih ke klien untuk satu job ini.</p>
+    <div class="field-solo">
+      <label for="hargaJasa">Harga jasa per job</label>
+      <div class="rp-wrap"><input type="text" id="hargaJasa" inputmode="numeric" placeholder="0"></div>
+    </div>
+    <div class="field-solo" style="margin-top:14px;">
+      <label for="jobBulan">Job per bulan (opsional)</label>
+      <input type="number" id="jobBulan" inputmode="numeric" placeholder="cth. 8">
+      <p class="hint">Isi ini kalau mau lihat proyeksi cuan bulanan.</p>
+    </div>
+  </div>
+
+  <div class="result">
+    <div class="ring"></div>
+    <div class="result-inner">
+      <div class="label">Profit per Job</div>
+      <div class="amount" id="profitAmount">Rp 0</div>
+      <div class="badge"><span class="dot" id="marginDot"></span><span id="marginText">Margin 0%</span></div>
+      <div class="verdict" id="verdictText"></div>
+
+      <div class="breakdown">
+        <div class="line"><span>Harga jasa</span><span id="bdJasa">Rp 0</span></div>
+        <div class="line"><span>Total modal</span><span id="bdModal">Rp 0</span></div>
+      </div>
+
+      <div class="breakdown monthly" id="monthlyBlock" style="display:none;">
+        <div class="line"><span>Proyeksi profit / bulan</span><span id="bdMonthly">Rp 0</span></div>
+      </div>
+
+      <button class="export-btn" id="exportPdf">📄 Cetak PDF</button>
+    </div>
+  </div>
+
+  <footer>Angka cuma estimasi. Sesuaikan sama kondisi kerja kamu ya.</footer>
+</div>
+
+<!-- Template PDF tersembunyi: dirender off-screen lalu ditangkap html2pdf -->
+<div id="pdfTemplate" style="position:absolute; left:-9999px; top:0; width:600px; font-family:'Plus Jakarta Sans', sans-serif; background:#1B0F1F; color:#F5EDE9; padding:40px;">
+  
+  <!-- Judul & Sub-judul PDF -->
+  <div style="text-align:center; margin-bottom:28px; border-bottom:1px solid #3E2438; padding-bottom:20px;">
+    <div style="font-family:'Playfair Display', serif; font-style:italic; font-weight:700; font-size:38px; color:#FFC857; margin-bottom:4px;">Cuantik</div>
+    <div style="font-size:14px; color:#B8A2AF; font-weight:500;">Rincian Modal & Profit Makeup</div>
+    <div id="pdfDate" style="font-size:12px; color:#B8A2AF; margin-top:6px;"></div>
+  </div>
+
+  <!-- Judul Tabel Rincian Modal -->
+  <div style="font-family:'Playfair Display', serif; font-size:16px; color:#FFC857; font-weight:600; margin-bottom:12px;">Rincian Modal & Operasional</div>
+
+  <!-- Tabel Rincian -->
+  <table style="width:100%; border-collapse:collapse; margin-bottom:24px;">
+    <thead>
+      <tr style="border-bottom:2px solid #FF4D8D;">
+        <th style="text-align:left; padding:10px 8px; font-size:12px; color:#FFC857; text-transform:uppercase; letter-spacing:1px;">Item Modal</th>
+        <th style="text-align:right; padding:10px 8px; font-size:12px; color:#FFC857; text-transform:uppercase; letter-spacing:1px;">Biaya</th>
+      </tr>
+    </thead>
+    <tbody id="pdfTableBody"></tbody>
+  </table>
+
+  <!-- Kartu Total & Profit -->
+  <div style="background:#251320; border:1px solid #3E2438; border-radius:16px; padding:20px 24px; margin-bottom:24px;">
+    <div style="display:flex; justify-content:space-between; padding:6px 0; font-size:14px; color:#B8A2AF;">
+      <span>Total Modal</span>
+      <span id="pdfTotalModal" style="color:#F5EDE9; font-weight:700;"></span>
+    </div>
+    <div style="display:flex; justify-content:space-between; padding:6px 0; font-size:14px; color:#B8A2AF;">
+      <span>Harga Jasa</span>
+      <span id="pdfHargaJasa" style="color:#F5EDE9; font-weight:700;"></span>
+    </div>
+    <div style="display:flex; justify-content:space-between; align-items:baseline; padding:14px 0 4px; margin-top:6px; border-top:1px solid #3E2438;">
+      <span style="color:#F5EDE9; font-weight:700; font-size:15px;">Profit per Job</span>
+      <span id="pdfProfit" style="font-family:'Playfair Display', serif; font-weight:700; font-size:24px;"></span>
+    </div>
+    <div id="pdfMargin" style="text-align:right; font-size:13px; color:#B8A2AF;"></div>
+    
+    <div id="pdfMonthlyRow" style="display:none; justify-content:space-between; padding:12px 0 0; margin-top:10px; font-size:14px; color:#7CE0B8; border-top:1px dashed #3E2438;">
+      <span>Proyeksi Profit / Bulan</span>
+      <span id="pdfMonthly" style="font-weight:700;"></span>
+    </div>
+  </div>
+
+  <!-- Kata Penutup Penyemangat -->
+  <div style="background: linear-gradient(135deg, rgba(255, 200, 87, 0.08), rgba(255, 77, 141, 0.08)); border: 1px solid #FF4D8D33; border-radius: 14px; padding: 18px 20px; text-align: center; margin-top: 24px; margin-bottom: 20px;">
+    <div id="pdfClosing" style="font-family:'Playfair Display', serif; font-style:italic; font-size:16px; color:#FFC857; line-height:1.5;"></div>
+  </div>
+
+  <!-- Footer Dokumentasi -->
+  <div style="text-align:center; font-size:11px; color:#B8A2AF;">Dibuat dengan Cuantik ✦ Modal dandan, profit kelihatan.</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+  const presets = {
+    "Natural / Daily": [
+      { nama: "Base & Foundation", jumlah: 15000 },
+      { nama: "Bulu mata + lem", jumlah: 8000 },
+      { nama: "Kapas, cotton bud, tisu", jumlah: 5000 },
+    ],
+    "Graduation": [
+      { nama: "Base & Foundation", jumlah: 20000 },
+      { nama: "Bulu mata + softlens", jumlah: 25000 },
+      { nama: "Aksesoris rambut", jumlah: 15000 },
+      { nama: "Transport", jumlah: 30000 },
+    ],
+    "Wedding": [
+      { nama: "Base & Foundation premium", jumlah: 40000 },
+      { nama: "Bulu mata + softlens", jumlah: 35000 },
+      { nama: "Sewa alat tambahan", jumlah: 50000 },
+      { nama: "Transport & tim", jumlah: 100000 },
+    ],
+    "Party / Photoshoot": [
+      { nama: "Base & Foundation", jumlah: 20000 },
+      { nama: "Bulu mata + aksen glam", jumlah: 20000 },
+      { nama: "Transport", jumlah: 25000 },
+    ],
+  };
+
+  const itemsList = document.getElementById('itemsList');
+  const presetsBar = document.getElementById('presets');
+
+  function currency(n){
+    if(isNaN(n)) n = 0;
+    return "Rp " + Math.round(n).toLocaleString('id-ID');
+  }
+
+  function parseRupiah(str){
+    return parseFloat((str || '').toString().replace(/\./g, '')) || 0;
+  }
+
+  function formatRupiah(n){
+    if(!n) return '';
+    return Number(n).toLocaleString('id-ID');
+  }
+
+  function attachRupiahFormatting(input){
+    input.addEventListener('input', () => {
+      const raw = input.value.replace(/\D/g, '').replace(/^0+(?=\d)/, '');
+      input.value = raw ? Number(raw).toLocaleString('id-ID') : '';
+      calculate();
+    });
+  }
+
+  function addItemRow(nama = "", jumlah = ""){
+    const row = document.createElement('div');
+    row.className = 'row-item';
+    row.innerHTML = `
+      <input type="text" placeholder="Nama item" value="${nama}">
+      <div class="rp-wrap"><input type="text" inputmode="numeric" placeholder="0" value="${formatRupiah(jumlah)}"></div>
+      <button class="remove" title="Hapus">✕</button>
+    `;
+    const jumlahInput = row.querySelectorAll('input')[1];
+    row.querySelectorAll('input')[0].addEventListener('input', calculate);
+    attachRupiahFormatting(jumlahInput);
+    row.querySelector('.remove').addEventListener('click', () => {
+      row.remove();
+      calculate();
+    });
+    itemsList.appendChild(row);
+  }
+
+  document.getElementById('addItem').addEventListener('click', () => addItemRow());
+
+  function loadPreset(name){
+    itemsList.innerHTML = '';
+    presets[name].forEach(it => addItemRow(it.nama, it.jumlah));
+    document.querySelectorAll('.chip').forEach(c => c.classList.toggle('active', c.dataset.name === name));
+    calculate();
+  }
+
+  Object.keys(presets).forEach((name, i) => {
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.textContent = name;
+    chip.dataset.name = name;
+    chip.addEventListener('click', () => loadPreset(name));
+    presetsBar.appendChild(chip);
+  });
+
+  attachRupiahFormatting(document.getElementById('hargaJasa'));
+  document.getElementById('jobBulan').addEventListener('input', calculate);
+
+  function calculate(){
+    let totalModal = 0;
+    itemsList.querySelectorAll('.row-item').forEach(row => {
+      const val = parseRupiah(row.querySelectorAll('input')[1].value);
+      totalModal += val;
+    });
+
+    const hargaJasa = parseRupiah(document.getElementById('hargaJasa').value);
+    const profit = hargaJasa - totalModal;
+    const margin = hargaJasa > 0 ? (profit / hargaJasa) * 100 : 0;
+
+    const amountEl = document.getElementById('profitAmount');
+    amountEl.textContent = currency(profit);
+    amountEl.classList.toggle('negative', profit < 0);
+
+    const dot = document.getElementById('marginDot');
+    const marginText = document.getElementById('marginText');
+    marginText.textContent = `Margin ${Math.round(margin)}%`;
+
+    let dotColor = '#7CE0B8';
+    let verdict = '';
+    if (hargaJasa === 0) {
+      dotColor = '#B8A2AF';
+      verdict = 'Isi harga jasa dulu buat lihat hasilnya.';
+    } else if (profit < 0) {
+      dotColor = '#FF6B6B';
+      verdict = '<b>Boncos.</b> Modal kamu lebih gede dari harga jasa. Naikin harga atau tekan biaya bahan.';
+    } else if (margin < 30) {
+      dotColor = '#FF6B6B';
+      verdict = '<b>Cuan tipis.</b> Coba naikin harga jasa sedikit atau cari bahan yang lebih hemat.';
+    } else if (margin < 50) {
+      dotColor = '#FFC857';
+      verdict = '<b>Lumayan.</b> Masih ada ruang buat dioptimalin lagi.';
+    } else {
+      dotColor = '#7CE0B8';
+      verdict = '<b>Auto sultan.</b> Margin kamu sehat, pertahanin polanya!';
+    }
+    dot.style.background = dotColor;
+    document.getElementById('verdictText').innerHTML = verdict;
+
+    document.getElementById('bdJasa').textContent = currency(hargaJasa);
+    document.getElementById('bdModal').textContent = currency(totalModal);
+
+    const jobBulan = parseFloat(document.getElementById('jobBulan').value) || 0;
+    const monthlyBlock = document.getElementById('monthlyBlock');
+    if (jobBulan > 0) {
+      monthlyBlock.style.display = 'block';
+      document.getElementById('bdMonthly').textContent = currency(profit * jobBulan);
+    } else {
+      monthlyBlock.style.display = 'none';
+    }
+  }
+
+  document.getElementById('exportPdf').addEventListener('click', () => {
+    // 1. Isi ulang tabel rincian modal di template PDF
+    const tbody = document.getElementById('pdfTableBody');
+    tbody.innerHTML = '';
+    let totalModal = 0;
+    itemsList.querySelectorAll('.row-item').forEach(row => {
+      const inputs = row.querySelectorAll('input');
+      const nama = inputs[0].value || "(tanpa nama)";
+      const val = parseRupiah(inputs[1].value);
+      totalModal += val;
+      const tr = document.createElement('tr');
+      tr.style.borderBottom = '1px solid #3E2438';
+      tr.innerHTML = `<td style="padding:10px 8px; font-size:13px;">${nama}</td><td style="padding:10px 8px; font-size:13px; text-align:right; font-weight:600;">${currency(val)}</td>`;
+      tbody.appendChild(tr);
+    });
+
+    const hargaJasa = parseRupiah(document.getElementById('hargaJasa').value);
+    const profit = hargaJasa - totalModal;
+    const margin = hargaJasa > 0 ? (profit / hargaJasa) * 100 : 0;
+    const jobBulan = parseFloat(document.getElementById('jobBulan').value) || 0;
+
+    // 2. Update tanggal & total angka
+    document.getElementById('pdfDate').textContent = `Tanggal: ${new Date().toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' })}`;
+    document.getElementById('pdfTotalModal').textContent = currency(totalModal);
+    document.getElementById('pdfHargaJasa').textContent = currency(hargaJasa);
+
+    const profitEl = document.getElementById('pdfProfit');
+    profitEl.textContent = currency(profit);
+    profitEl.style.color = profit < 0 ? '#FF6B6B' : '#7CE0B8';
+    document.getElementById('pdfMargin').textContent = `Margin Profit: ${Math.round(margin)}%`;
+
+    const monthlyRow = document.getElementById('pdfMonthlyRow');
+    if (jobBulan > 0) {
+      monthlyRow.style.display = 'flex';
+      document.getElementById('pdfMonthly').textContent = currency(profit * jobBulan);
+    } else {
+      monthlyRow.style.display = 'none';
+    }
+
+    // 3. Kalimat penutup penyemangat dinamis berdasarkan margin
+    let closing = '';
+    if (hargaJasa === 0) {
+      closing = '✨ "Setiap karya punya nilai. Yuk isi harga jasamu dan hitung potensi cuanmu!" ✨';
+    } else if (profit < 0) {
+      closing = '💪 "Jangan patah semangat! Evaluasi modal & harga jasa adalah langkah awal menuju MUA profesional yang sukses." 💪';
+    } else if (margin < 30) {
+      closing = '✨ "Cuan tipis bukan berarti gagal — ini sinyal buat naikin value & branding jasa kamu. Terus berkembang!" ✨';
+    } else if (margin < 50) {
+      closing = '💫 "Progres kamu luar biasa! Sedikit optimasi bahan atau harga, cuan kamu bakal makin tebal. Keep glowing!" 💫';
+    } else {
+      closing = '👑 "Margin sehat, kerja keras & skill kamu terbayar tuntas. Pertahankan ritmenya dan terus level up!" 👑';
+    }
+    document.getElementById('pdfClosing').textContent = closing;
+
+    // 4. Proses pencetakan PDF via html2pdf
+    const element = document.getElementById('pdfTemplate');
+    const opt = {
+      margin: 0,
+      filename: 'cuantik-rincian-modal.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2, backgroundColor: '#1B0F1F', windowWidth: 600 },
+      jsPDF: { unit: 'px', format: [600, element.scrollHeight + 10], orientation: 'portrait' }
+    };
+
+    html2pdf().set(opt).from(element).outputPdf('blob').then((blob) => {
+      const url = URL.createObjectURL(blob);
+      const newTab = window.open(url, '_blank');
+      if (!newTab) {
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = opt.filename;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+      setTimeout(() => URL.revokeObjectURL(url), 30000);
+    });
+  });
+
+  // Initial State
+  addItemRow("Base & Foundation", 15000);
+  addItemRow("Bulu mata + lem", 8000);
+  addItemRow("Kapas, cotton bud, tisu", 5000);
+  calculate();
+</script>
+</body>
+</html>
