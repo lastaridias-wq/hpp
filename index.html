@@ -126,6 +126,8 @@
   .row-item .rp-wrap{
     flex:1;
     position:relative;
+    display:block;
+    width:100%;
   }
   .row-item button.remove{
     flex:0 0 auto;
@@ -156,6 +158,13 @@
     outline:none;
     transition:border-color .15s ease, box-shadow .15s ease;
   }
+
+  /* Perbaikan Posisi Teks "Rp" agar Selalu di Dalam Kotak */
+  .rp-wrap{
+    position:relative;
+    display:block;
+    width:100%;
+  }
   .rp-wrap::before{
     content:"Rp";
     position:absolute;
@@ -166,10 +175,12 @@
     color:var(--text-muted);
     font-weight:600;
     pointer-events:none;
+    z-index:2;
   }
   .rp-wrap input{
-    padding-left:34px;
+    padding-left:36px;
   }
+
   input:focus-visible{
     border-color:var(--primary-rose);
     box-shadow:0 0 0 3px var(--magenta-soft);
