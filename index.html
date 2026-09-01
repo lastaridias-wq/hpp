@@ -8,26 +8,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg-deep:#1B0F1F;
-    --bg-panel:#251320;
-    --bg-panel-2:#2E1728;
-    --line:#3E2438;
-    --magenta:#FF4D8D;
-    --magenta-soft:#ff4d8d33;
-    --gold:#FFC857;
-    --lilac:#C9A6FF;
-    --text:#F5EDE9;
-    --text-muted:#B8A2AF;
-    --danger:#FF6B6B;
-    --good:#7CE0B8;
+    --bg-gradient: linear-gradient(135deg, #FFF8F8 0%, #FDEEEF 50%, #F9E5EA 100%);
+    --bg-panel: rgba(255, 255, 255, 0.9);
+    --bg-panel-2: #FFFFFF;
+    --line: #F3C5D0;
+    --primary-rose: #D94870;
+    --primary-dark: #632233;
+    --magenta-soft: rgba(217, 72, 112, 0.12);
+    --gold: #C27D00;
+    --lilac: #8C52FF;
+    --text: #331D24;
+    --text-muted: #7A5C65;
+    --danger: #E53935;
+    --good: #0E855C;
+    --shadow-soft: 0 8px 24px rgba(217, 72, 112, 0.08);
   }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
-    background:
-      radial-gradient(circle at 15% 0%, #3a1a33 0%, transparent 45%),
-      radial-gradient(circle at 90% 15%, #2a1440 0%, transparent 40%),
-      var(--bg-deep);
+    background: var(--bg-gradient);
     color:var(--text);
     font-family:'Plus Jakarta Sans', sans-serif;
     min-height:100vh;
@@ -50,7 +49,7 @@
     font-size:2.6rem;
     margin:0;
     letter-spacing:0.5px;
-    background:linear-gradient(100deg, var(--gold), var(--magenta) 55%, var(--lilac));
+    background:linear-gradient(100deg, var(--primary-rose), #B02E52 55%, var(--lilac));
     -webkit-background-clip:text;
     background-clip:text;
     color:transparent;
@@ -80,14 +79,17 @@
     padding:9px 15px;
     border-radius:999px;
     cursor:pointer;
-    transition:transform .15s ease, border-color .15s ease, background .15s ease;
+    transition:transform .15s ease, border-color .15s ease, background .15s ease, color .15s ease;
     white-space:nowrap;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
   }
-  .chip:hover{border-color:var(--magenta);}
+  .chip:hover{border-color:var(--primary-rose); color:var(--primary-rose);}
   .chip:active{transform:scale(0.96);}
   .chip.active{
-    background:linear-gradient(100deg, var(--magenta), #b23566);
+    background:linear-gradient(100deg, var(--primary-rose), #C2375E);
     border-color:transparent;
+    color:#FFFFFF;
+    box-shadow: 0 4px 12px rgba(217, 72, 112, 0.25);
   }
 
   .card{
@@ -96,13 +98,15 @@
     border-radius:20px;
     padding:20px 18px;
     margin-bottom:16px;
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(8px);
   }
   .card h2{
     font-family:'Playfair Display', serif;
     font-weight:600;
     font-size:1.15rem;
     margin:0 0 4px;
-    color:var(--gold);
+    color:var(--primary-dark);
   }
   .card .sub{
     font-size:0.8rem;
@@ -136,12 +140,12 @@
   }
   .row-item button.remove:hover{
     color:var(--danger);
-    background:#ff6b6b1a;
+    background:rgba(229, 57, 53, 0.1);
   }
 
   input[type="text"], input[type="number"]{
     width:100%;
-    background:var(--bg-deep);
+    background:#FFFFFF;
     border:1px solid var(--line);
     color:var(--text);
     font-family:'Plus Jakarta Sans', sans-serif;
@@ -167,7 +171,7 @@
     padding-left:34px;
   }
   input:focus-visible{
-    border-color:var(--magenta);
+    border-color:var(--primary-rose);
     box-shadow:0 0 0 3px var(--magenta-soft);
   }
 
@@ -175,19 +179,20 @@
     display:flex;
     align-items:center;
     gap:6px;
-    background:none;
-    border:1px dashed var(--line);
-    color:var(--lilac);
+    background:#FFFFFF;
+    border:1px dashed var(--primary-rose);
+    color:var(--primary-rose);
     font-weight:600;
     font-size:0.85rem;
-    padding:9px 14px;
+    padding:10px 14px;
     border-radius:12px;
     cursor:pointer;
     width:100%;
     justify-content:center;
     margin-top:2px;
+    transition: all 0.2s ease;
   }
-  .add-row:hover{border-color:var(--lilac);}
+  .add-row:hover{background: #FFF0F3;}
 
   .field-solo{margin-top:2px;}
   .field-solo label{
@@ -195,7 +200,7 @@
     font-size:0.85rem;
     font-weight:600;
     margin-bottom:6px;
-    color:var(--text);
+    color:var(--primary-dark);
   }
   .field-solo .hint{
     font-size:0.76rem;
@@ -212,9 +217,10 @@
     text-align:center;
     padding:34px 20px 26px;
     border-radius:24px;
-    background:radial-gradient(circle at 50% 30%, #3a1c34 0%, var(--bg-panel) 70%);
+    background:linear-gradient(135deg, #FFFFFF 0%, #FFF0F3 100%);
     border:1px solid var(--line);
     overflow:hidden;
+    box-shadow: var(--shadow-soft);
   }
   .ring{
     position:absolute;
@@ -222,9 +228,9 @@
     transform:translateX(-50%);
     width:220px; height:220px;
     border-radius:50%;
-    background:conic-gradient(from 0deg, var(--gold), var(--magenta), var(--lilac), var(--gold));
+    background:conic-gradient(from 0deg, #FFC857, #D94870, #8C52FF, #FFC857);
     filter:blur(40px);
-    opacity:0.35;
+    opacity:0.25;
     animation:spin 10s linear infinite;
   }
   @keyframes spin{ to{ transform:translateX(-50%) rotate(360deg); } }
@@ -244,19 +250,20 @@
     font-weight:700;
     font-size:2.5rem;
     margin:6px 0 10px;
-    color:var(--text);
+    color:var(--primary-dark);
   }
   .result .amount.negative{color:var(--danger);}
   .badge{
     display:inline-flex;
     align-items:center;
     gap:6px;
-    background:var(--bg-deep);
+    background:#FFFFFF;
     border:1px solid var(--line);
     padding:6px 14px;
     border-radius:999px;
     font-size:0.85rem;
     font-weight:700;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
   }
   .badge .dot{
     width:8px; height:8px; border-radius:50%;
@@ -267,7 +274,7 @@
     color:var(--text-muted);
     line-height:1.4;
   }
-  .verdict b{color:var(--text);}
+  .verdict b{color:var(--primary-dark);}
 
   .breakdown{
     margin-top:16px;
@@ -282,7 +289,7 @@
     padding:4px 0;
     color:var(--text-muted);
   }
-  .breakdown .line span:last-child{color:var(--text); font-weight:600;}
+  .breakdown .line span:last-child{color:var(--primary-dark); font-weight:600;}
 
   .monthly{
     margin-top:14px;
@@ -305,13 +312,14 @@
     margin-top:16px;
     padding:12px 16px;
     border-radius:14px;
-    border:1px solid var(--line);
-    background:linear-gradient(100deg, var(--gold), var(--magenta) 70%);
-    color:var(--bg-deep);
+    border:none;
+    background:linear-gradient(100deg, var(--primary-rose), #C2375E);
+    color:#FFFFFF;
     font-family:'Plus Jakarta Sans', sans-serif;
     font-weight:700;
     font-size:0.88rem;
     cursor:pointer;
+    box-shadow: 0 4px 14px rgba(217, 72, 112, 0.25);
     transition:transform .15s ease, opacity .15s ease;
   }
   .export-btn:hover{opacity:0.92;}
@@ -374,52 +382,52 @@
 </div>
 
 <div id="pdfContainer" style="display: block; overflow: hidden; width: 0; height: 0; position: absolute; top: -9999px; left: -9999px;">
-  <div id="pdfTemplate" style="width:550px; font-family:'Plus Jakarta Sans', Arial, sans-serif; background-color:#1B0F1F; color:#F5EDE9; padding:35px; box-sizing: border-box;">
+  <div id="pdfTemplate" style="width:550px; font-family:'Plus Jakarta Sans', Arial, sans-serif; background-color:#FFF8F8; color:#331D24; padding:35px; box-sizing: border-box;">
     
-    <div style="text-align:center; margin-bottom:25px; border-bottom:1px solid #3E2438; padding-bottom:15px;">
-      <div style="font-family:'Playfair Display', Georgia, serif; font-style:italic; font-weight:700; font-size:36px; color:#FFC857; margin-bottom:4px;">Cuantik</div>
-      <div style="font-size:13px; color:#B8A2AF; font-weight:500;">Rincian Modal & Profit Makeup</div>
-      <div id="pdfDate" style="font-size:11px; color:#B8A2AF; margin-top:6px;"></div>
+    <div style="text-align:center; margin-bottom:25px; border-bottom:1px solid #F3C5D0; padding-bottom:15px;">
+      <div style="font-family:'Playfair Display', Georgia, serif; font-style:italic; font-weight:700; font-size:36px; color:#D94870; margin-bottom:4px;">Cuantik</div>
+      <div style="font-size:13px; color:#7A5C65; font-weight:500;">Rincian Modal & Profit Makeup</div>
+      <div id="pdfDate" style="font-size:11px; color:#7A5C65; margin-top:6px;"></div>
     </div>
 
-    <div style="font-family:'Playfair Display', Georgia, serif; font-size:15px; color:#FFC857; font-weight:600; margin-bottom:10px;">Rincian Modal & Operasional</div>
+    <div style="font-family:'Playfair Display', Georgia, serif; font-size:15px; color:#632233; font-weight:600; margin-bottom:10px;">Rincian Modal & Operasional</div>
 
     <table style="width:100%; border-collapse:collapse; margin-bottom:20px;">
       <thead>
-        <tr style="border-bottom:2px solid #FF4D8D;">
-          <th style="text-align:left; padding:8px 5px; font-size:11px; color:#FFC857; text-transform:uppercase; letter-spacing:1px;">Item Modal</th>
-          <th style="text-align:right; padding:8px 5px; font-size:11px; color:#FFC857; text-transform:uppercase; letter-spacing:1px;">Biaya</th>
+        <tr style="border-bottom:2px solid #D94870;">
+          <th style="text-align:left; padding:8px 5px; font-size:11px; color:#632233; text-transform:uppercase; letter-spacing:1px;">Item Modal</th>
+          <th style="text-align:right; padding:8px 5px; font-size:11px; color:#632233; text-transform:uppercase; letter-spacing:1px;">Biaya</th>
         </tr>
       </thead>
       <tbody id="pdfTableBody"></tbody>
     </table>
 
-    <div style="background:#251320; border:1px solid #3E2438; border-radius:12px; padding:18px 20px; margin-bottom:20px; box-sizing: border-box;">
-      <div style="display:flex; justify-content:space-between; padding:5px 0; font-size:13px; color:#B8A2AF;">
+    <div style="background:#FFFFFF; border:1px solid #F3C5D0; border-radius:12px; padding:18px 20px; margin-bottom:20px; box-sizing: border-box;">
+      <div style="display:flex; justify-content:space-between; padding:5px 0; font-size:13px; color:#7A5C65;">
         <span>Total Modal</span>
-        <span id="pdfTotalModal" style="color:#F5EDE9; font-weight:700;"></span>
+        <span id="pdfTotalModal" style="color:#331D24; font-weight:700;"></span>
       </div>
-      <div style="display:flex; justify-content:space-between; padding:5px 0; font-size:13px; color:#B8A2AF;">
+      <div style="display:flex; justify-content:space-between; padding:5px 0; font-size:13px; color:#7A5C65;">
         <span>Harga Jasa</span>
-        <span id="pdfHargaJasa" style="color:#F5EDE9; font-weight:700;"></span>
+        <span id="pdfHargaJasa" style="color:#331D24; font-weight:700;"></span>
       </div>
-      <div style="display:flex; justify-content:space-between; align-items:baseline; padding:12px 0 4px; margin-top:5px; border-top:1px solid #3E2438;">
-        <span style="color:#F5EDE9; font-weight:700; font-size:14px;">Profit per Job</span>
+      <div style="display:flex; justify-content:space-between; align-items:baseline; padding:12px 0 4px; margin-top:5px; border-top:1px solid #F3C5D0;">
+        <span style="color:#331D24; font-weight:700; font-size:14px;">Profit per Job</span>
         <span id="pdfProfit" style="font-family:'Playfair Display', Georgia, serif; font-weight:700; font-size:22px;"></span>
       </div>
-      <div id="pdfMargin" style="text-align:right; font-size:12px; color:#B8A2AF;"></div>
+      <div id="pdfMargin" style="text-align:right; font-size:12px; color:#7A5C65;"></div>
       
-      <div id="pdfMonthlyRow" style="display:none; justify-content:space-between; padding:10px 0 0; margin-top:8px; font-size:13px; color:#7CE0B8; border-top:1px dashed #3E2438;">
+      <div id="pdfMonthlyRow" style="display:none; justify-content:space-between; padding:10px 0 0; margin-top:8px; font-size:13px; color:#0E855C; border-top:1px dashed #F3C5D0;">
         <span>Proyeksi Profit / Bulan</span>
         <span id="pdfMonthly" style="font-weight:700;"></span>
       </div>
     </div>
 
-    <div style="background: linear-gradient(135deg, rgba(255, 200, 87, 0.08), rgba(255, 77, 141, 0.08)); border: 1px solid #FF4D8D33; border-radius: 12px; padding: 15px 18px; text-align: center; margin-top: 20px; margin-bottom: 15px;">
-      <div id="pdfClosing" style="font-family:'Playfair Display', Georgia, serif; font-style:italic; font-size:15px; color:#FFC857; line-height:1.4;"></div>
+    <div style="background: linear-gradient(135deg, rgba(255, 248, 248, 0.8), rgba(253, 238, 239, 0.8)); border: 1px solid #F3C5D0; border-radius: 12px; padding: 15px 18px; text-align: center; margin-top: 20px; margin-bottom: 15px;">
+      <div id="pdfClosing" style="font-family:'Playfair Display', Georgia, serif; font-style:italic; font-size:15px; color:#D94870; line-height:1.4;"></div>
     </div>
 
-    <div style="text-align:center; font-size:10px; color:#B8A2AF;">Dibuat dengan Cuantik ✦ Modal dandan, profit kelihatan.</div>
+    <div style="text-align:center; font-size:10px; color:#7A5C65;">Dibuat dengan Cuantik ✦ Modal dandan, profit kelihatan.</div>
   </div>
 </div>
 
@@ -534,22 +542,22 @@
     const marginText = document.getElementById('marginText');
     marginText.textContent = `Margin ${Math.round(margin)}%`;
 
-    let dotColor = '#7CE0B8';
+    let dotColor = '#0E855C';
     let verdict = '';
     if (hargaJasa === 0) {
-      dotColor = '#B8A2AF';
+      dotColor = '#7A5C65';
       verdict = 'Isi harga jasa dulu buat lihat hasilnya.';
     } else if (profit < 0) {
-      dotColor = '#FF6B6B';
+      dotColor = '#E53935';
       verdict = '<b>Boncos.</b> Modal kamu lebih gede dari harga jasa. Naikin harga atau tekan biaya bahan.';
     } else if (margin < 30) {
-      dotColor = '#FF6B6B';
+      dotColor = '#E53935';
       verdict = '<b>Cuan tipis.</b> Coba naikin harga jasa sedikit atau cari bahan yang lebih hemat.';
     } else if (margin < 50) {
-      dotColor = '#FFC857';
+      dotColor = '#C27D00';
       verdict = '<b>Lumayan.</b> Masih ada ruang buat dioptimalin lagi.';
     } else {
-      dotColor = '#7CE0B8';
+      dotColor = '#0E855C';
       verdict = '<b>Auto sultan.</b> Margin kamu sehat, pertahanin polanya!';
     }
     dot.style.background = dotColor;
@@ -569,7 +577,6 @@
   }
 
   document.getElementById('exportPdf').addEventListener('click', () => {
-    // Memastikan library html2pdf sudah dimuat dengan benar
     if (typeof html2pdf === 'undefined') {
       alert('Sistem sedang memuat pustaka cetak. Harap tunggu 3 detik dan coba lagi.');
       return;
@@ -584,8 +591,8 @@
       const val = parseRupiah(inputs[1].value);
       totalModal += val;
       const tr = document.createElement('tr');
-      tr.style.borderBottom = '1px solid #3E2438';
-      tr.innerHTML = `<td style="padding:8px 5px; font-size:13px; color:#F5EDE9;">${nama}</td><td style="padding:8px 5px; font-size:13px; text-align:right; font-weight:600; color:#F5EDE9;">${currency(val)}</td>`;
+      tr.style.borderBottom = '1px solid #F3C5D0';
+      tr.innerHTML = `<td style="padding:8px 5px; font-size:13px; color:#331D24;">${nama}</td><td style="padding:8px 5px; font-size:13px; text-align:right; font-weight:600; color:#331D24;">${currency(val)}</td>`;
       tbody.appendChild(tr);
     });
 
@@ -600,7 +607,7 @@
 
     const profitEl = document.getElementById('pdfProfit');
     profitEl.textContent = currency(profit);
-    profitEl.style.color = profit < 0 ? '#FF6B6B' : '#7CE0B8';
+    profitEl.style.color = profit < 0 ? '#E53935' : '#0E855C';
     document.getElementById('pdfMargin').textContent = `Margin Profit: ${Math.round(margin)}%`;
 
     const monthlyRow = document.getElementById('pdfMonthlyRow');
@@ -625,18 +632,15 @@
     }
     document.getElementById('pdfClosing').textContent = closing;
 
-    // PERBAIKAN SISTEM EKSPORT: Dipaksa langsung mengunduh file (.save()) 
-    // agar kompatibel di browser HP, BioKu, ataupun iFrame tanpa terblokir sistem pop-up
     const element = document.getElementById('pdfTemplate');
     const opt = {
       margin: [10, 10, 10, 10],
       filename: 'cuantik-rincian-modal.pdf',
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#1B0F1F' },
+      html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#FFF8F8' },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-    // Jalankan eksekusi langsung ke download lokal perangkat
     html2pdf().set(opt).from(element).save();
   });
 
